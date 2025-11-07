@@ -29,6 +29,11 @@ import {
 import Link from 'next/link';
 import Navbar from '../../../components/Navbar';
 import Chart from '../../../components/charts/Chart';
+import InteractionMatrix from '../../../components/charts/InteractionMatrix';
+import SentimentFlow from '../../../components/charts/SentimentFlow';
+import NetworkDiagram from '../../../components/charts/NetworkDiagram';
+import MetricsDashboard from '../../../components/charts/MetricsDashboard';
+import AdvancedInsightsPanel from '../../../components/charts/AdvancedInsightsPanel';
 
 interface MeetingLogs {
   meetingId: string;
@@ -449,7 +454,9 @@ export default function MeetingLogsPage() {
             <div className="flex space-x-1 bg-zinc-800/50 rounded-lg p-1">
               {[
                 { id: 'overview', label: 'Overview', icon: BarChart3 },
+                { id: 'metrics', label: 'Metrics Dashboard', icon: TrendingUp },
                 { id: 'sentiment', label: 'Sentiment Analysis', icon: TrendingUp },
+                { id: 'interactions', label: 'Interactions', icon: Users },
                 { id: 'transcript', label: 'Transcript', icon: MessageSquare },
                 { id: 'engagement', label: 'Engagement', icon: Activity },
                 { id: 'insights', label: 'AI Insights', icon: Brain },
@@ -551,7 +558,194 @@ export default function MeetingLogsPage() {
                   ))}
                 </div>
               </motion.div>
+
+              {/* Network Diagram */}
+              <div className="lg:col-span-2">
+                <NetworkDiagram
+                  nodes={[
+                    ...meetingLogs.participants.map(p => ({
+                      id: p.id,
+                      label: p.name.split(' ')[0],
+                      value: p.speakingTime,
+                      category: 'speaker' as const,
+                      connections: meetingLogs.participants.filter(other => other.id !== p.id).map(other => other.id)
+                    })),
+                    ...meetingLogs.analytics.keyTopics.map(topic => ({
+                      id: topic.topic,
+                      label: topic.topic,
+                      value: topic.frequency,
+                      category: 'topic' as const,
+                      connections: meetingLogs.participants.map(p => p.id)
+                    })),
+                    ...meetingLogs.analytics.actionItems.map(action => ({
+                      id: action.id,
+                      label: action.text.substring(0, 20),
+                      value: action.confidence,
+                      category: 'action' as const,
+                      connections: action.assignee ? [meetingLogs.participants.find(p => p.name === action.assignee)?.id].filter(Boolean) as string[] : []
+                    }))
+                  ]}
+                  title="Meeting Network Analysis"
+                  height={400}
+                />
+              </div>
+
+              {/* Comparative Analysis */}
+              <div className="lg:col-span-2 grid md:grid-cols-2 gap-6">
+                <Chart
+                  data={[
+                    { timestamp: 'Current Meeting', value: meetingLogs.analytics.sentimentOverall },
+                    { timestamp: 'Previous Meeting', value: 78 },
+                    { timestamp: 'Team Average', value: 82 },
+                    { timestamp: 'Organization Avg', value: 75 }
+                  ]}
+                  title="Sentiment Comparison"
+                  type="bar"
+                  height={250}
+                />
+
+                <Chart
+                  data={[
+                    { timestamp: 'Current Meeting', value: meetingLogs.engagement.overall },
+                    { timestamp: 'Previous Meeting', value: 80 },
+                    { timestamp: 'Team Average', value: 85 },
+                    { timestamp: 'Organization Avg', value: 78 }
+                  ]}
+                  title="Engagement Comparison"
+                  type="bar"
+                  height={250}
+                />
+              </div>
             </div>
+          )}
+
+          {activeTab === 'metrics' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              <MetricsDashboard
+                title="Meeting Performance Metrics"
+                columns={4}
+                metrics={[
+                  {
+                    label: "Overall Sentiment",
+                    value: meetingLogs.analytics.sentimentOverall,
+                    previousValue: 78,
+                    format: "percentage",
+                    trend: "up",
+                    target: 85,
+                    color: "#10b981"
+                  },
+                  {
+                    label: "Engagement Level",
+                    value: meetingLogs.engagement.overall,
+                    previousValue: 80,
+                    format: "percentage",
+                    trend: "up",
+                    target: 90,
+                    color: "#3b82f6"
+                  },
+                  {
+                    label: "Speaking Balance",
+                    value: Math.min(...meetingLogs.participants.map(p => p.speakingTime)) / Math.max(...meetingLogs.participants.map(p => p.speakingTime)) * 100,
+                    previousValue: 65,
+                    format: "percentage",
+                    trend: "up",
+                    target: 75,
+                    color: "#8b5cf6"
+                  },
+                  {
+                    label: "Action Items Generated",
+                    value: meetingLogs.analytics.actionItems.length,
+                    previousValue: 2,
+                    format: "number",
+                    trend: "up",
+                    target: 5,
+                    color: "#f59e0b"
+                  },
+                  {
+                    label: "Average Confidence",
+                    value: Math.round(meetingLogs.analytics.actionItems.reduce((acc, item) => acc + item.confidence, 0) / meetingLogs.analytics.actionItems.length),
+                    previousValue: 85,
+                    format: "percentage",
+                    trend: "up",
+                    target: 90,
+                    color: "#ef4444"
+                  },
+                  {
+                    label: "Topic Coverage",
+                    value: meetingLogs.analytics.keyTopics.length,
+                    previousValue: 4,
+                    format: "number",
+                    trend: "up",
+                    target: 6,
+                    color: "#06b6d4"
+                  },
+                  {
+                    label: "Meeting Duration",
+                    value: 45,
+                    previousValue: 60,
+                    format: "time",
+                    trend: "down",
+                    target: 45,
+                    color: "#84cc16"
+                  },
+                  {
+                    label: "Participation Rate",
+                    value: Math.round((meetingLogs.participants.filter(p => p.speakingTime > 0).length / meetingLogs.participants.length) * 100),
+                    previousValue: 85,
+                    format: "percentage",
+                    trend: "up",
+                    target: 100,
+                    color: "#f97316"
+                  }
+                ]}
+              />
+
+              {/* Advanced Charts Grid */}
+              <div className="grid lg:grid-cols-2 gap-6">
+                <Chart
+                  data={meetingLogs.analytics.keyTopics.map(topic => ({
+                    timestamp: topic.topic,
+                    value: topic.frequency,
+                    category: topic.topic
+                  }))}
+                  title="Topic Frequency Distribution"
+                  type="donut"
+                  height={300}
+                />
+
+                <Chart
+                  data={meetingLogs.participants.map(p => ({
+                    timestamp: p.name,
+                    value: p.engagement,
+                    secondary: p.sentiment,
+                    speaker: p.name
+                  }))}
+                  title="Engagement vs Sentiment Analysis"
+                  type="scatter"
+                  height={300}
+                  valueFormatter={(value) => `${value}%`}
+                />
+              </div>
+
+              {/* Radar Chart for Participant Skills */}
+              <Chart
+                data={[
+                  { timestamp: 'Communication', value: 85, category: 'Communication' },
+                  { timestamp: 'Leadership', value: 78, category: 'Leadership' },
+                  { timestamp: 'Problem Solving', value: 92, category: 'Problem Solving' },
+                  { timestamp: 'Collaboration', value: 88, category: 'Collaboration' },
+                  { timestamp: 'Innovation', value: 75, category: 'Innovation' },
+                  { timestamp: 'Technical Skills', value: 90, category: 'Technical Skills' }
+                ]}
+                title="Team Skills Assessment"
+                type="radar"
+                height={350}
+              />
+            </motion.div>
           )}
 
           {activeTab === 'sentiment' && (
@@ -560,6 +754,19 @@ export default function MeetingLogsPage() {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
             >
+              {/* Sentiment Flow Diagram */}
+              <SentimentFlow
+                data={meetingLogs.analytics.sentimentTimeline.map(point => ({
+                  timestamp: point.timestamp,
+                  speaker: point.speaker,
+                  sentiment: point.sentiment,
+                  topics: meetingLogs.analytics.keyTopics.slice(0, 2).map(t => t.topic),
+                  impact: Math.random() * 10 + 5 // Mock impact data
+                }))}
+                title="Sentiment Flow Over Time"
+                height={400}
+              />
+
               {/* Sentiment Timeline Chart */}
               <Chart
                 data={meetingLogs.analytics.sentimentTimeline.map(point => ({
@@ -567,7 +774,7 @@ export default function MeetingLogsPage() {
                   value: point.sentiment,
                   speaker: point.speaker
                 }))}
-                title="Sentiment Over Time"
+                title="Detailed Sentiment Analysis"
                 type="area"
                 height={300}
                 showLegend={true}
@@ -603,6 +810,68 @@ export default function MeetingLogsPage() {
                   ))}
                 </div>
               </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'interactions' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              {/* Interaction Matrix */}
+              <InteractionMatrix
+                data={meetingLogs.participants.map(participant => ({
+                  participant: participant.name,
+                  interactions: meetingLogs.participants
+                    .filter(other => other.id !== participant.id)
+                    .map(other => ({
+                      with: other.name,
+                      count: Math.floor(Math.random() * 15) + 1,
+                      sentiment: Math.floor(Math.random() * 40) + 60
+                    }))
+                }))}
+                title="Participant Interaction Matrix"
+                height={400}
+              />
+
+              {/* Speaking Time Distribution */}
+              <div className="grid lg:grid-cols-2 gap-6">
+                <Chart
+                  data={meetingLogs.participants.map(p => ({
+                    timestamp: p.name.split(' ')[0],
+                    value: p.speakingTime
+                  }))}
+                  title="Speaking Time Distribution"
+                  type="bar"
+                  height={300}
+                  valueFormatter={(value) => `${value}min`}
+                />
+
+                <Chart
+                  data={meetingLogs.participants.map(p => ({
+                    timestamp: p.name.split(' ')[0],
+                    value: p.engagement
+                  }))}
+                  title="Engagement Levels"
+                  type="donut"
+                  height={300}
+                />
+              </div>
+
+              {/* Interaction Heatmap */}
+              <Chart
+                data={meetingLogs.participants.flatMap(p1 => 
+                  meetingLogs.participants.map(p2 => ({
+                    timestamp: p2.name.split(' ')[0],
+                    value: p1.id === p2.id ? 0 : Math.floor(Math.random() * 100),
+                    speaker: p1.name.split(' ')[0]
+                  }))
+                )}
+                title="Interaction Intensity Heatmap"
+                type="heatmap"
+                height={300}
+              />
             </motion.div>
           )}
 
@@ -734,10 +1003,63 @@ export default function MeetingLogsPage() {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
             >
-              {/* AI Insights */}
+              {/* Advanced AI Insights */}
+              <AdvancedInsightsPanel
+                title="AI-Powered Meeting Analysis"
+                insights={[
+                  {
+                    type: 'success',
+                    title: 'High Team Engagement',
+                    description: 'Team members showed strong engagement with an average score of 85%. This indicates active participation and interest in the discussion topics.',
+                    value: '85%',
+                    trend: 'up',
+                    priority: 'low'
+                  },
+                  {
+                    type: 'warning',
+                    title: 'Performance Concerns Identified',
+                    description: 'Multiple mentions of performance issues detected. Sentiment dropped to 65% when discussing loading times and optimization.',
+                    value: '65%',
+                    trend: 'down',
+                    priority: 'high'
+                  },
+                  {
+                    type: 'info',
+                    title: 'Balanced Speaking Distribution',
+                    description: 'Good distribution of speaking time across participants. No single person dominated the conversation.',
+                    value: '78%',
+                    trend: 'neutral',
+                    priority: 'medium'
+                  },
+                  {
+                    type: 'recommendation',
+                    title: 'Increase Action Item Specificity',
+                    description: 'While 3 action items were generated, consider adding more specific deadlines and ownership assignments.',
+                    value: '3 items',
+                    priority: 'medium'
+                  },
+                  {
+                    type: 'success',
+                    title: 'Clear Communication Style',
+                    description: 'High confidence scores (95%+) in action item extraction indicate clear and decisive communication.',
+                    value: '95%',
+                    trend: 'up',
+                    priority: 'low'
+                  },
+                  {
+                    type: 'warning',
+                    title: 'Topic Focus Needed',
+                    description: 'Meeting covered 5 different topics but may benefit from deeper focus on critical issues.',
+                    value: '5 topics',
+                    priority: 'medium'
+                  }
+                ]}
+              />
+
+              {/* Original AI Insights */}
               <div className="grid gap-6">
                 <div className="bg-linear-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl p-6">
-                  <h3 className="text-lg font-semibold text-white mb-4">AI-Generated Insights</h3>
+                  <h3 className="text-lg font-semibold text-white mb-4">Meeting Quality Analysis</h3>
                   <div className="space-y-4">
                     {meetingLogs.analytics.insights.map((insight, index) => (
                       <div key={index} className="p-4 bg-zinc-800/50 rounded-lg border-l-4 border-l-emerald-400">
@@ -795,6 +1117,21 @@ export default function MeetingLogsPage() {
                     ))}
                   </div>
                 </div>
+
+                {/* AI Recommendations Chart */}
+                <Chart
+                  data={[
+                    { timestamp: 'Communication', value: 90, category: 'Communication' },
+                    { timestamp: 'Efficiency', value: 75, category: 'Efficiency' },
+                    { timestamp: 'Engagement', value: 85, category: 'Engagement' },
+                    { timestamp: 'Clarity', value: 88, category: 'Clarity' },
+                    { timestamp: 'Action Focus', value: 70, category: 'Action Focus' },
+                    { timestamp: 'Time Management', value: 82, category: 'Time Management' }
+                  ]}
+                  title="Meeting Quality Dimensions"
+                  type="radar"
+                  height={350}
+                />
               </div>
             </motion.div>
           )}

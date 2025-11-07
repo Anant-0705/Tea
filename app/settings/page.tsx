@@ -19,7 +19,6 @@ import {
   Clock,
   Target
 } from 'lucide-react';
-import Navbar from '../components/Navbar';
 
 interface AutomationSettings {
   actionItems: {
@@ -201,9 +200,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f0f]">
-      <Navbar />
-      
-      <div className="pt-24 pb-20 px-6">
+      <div className="pb-20">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div

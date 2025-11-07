@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X, Phone, User, LogOut } from 'lucide-react';
+import { Menu, X, Brain, User, LogOut } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -36,11 +36,11 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="relative">
-              <Phone className="w-8 h-8 text-zinc-400" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
+              <Brain className="w-8 h-8 text-blue-400" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
             </div>
-            <span className="text-xl font-bold text-white">
-              Auto<span className="text-zinc-400">Track</span>
+            <span className="text-xl font-bold text-blue-400">
+              TEA<span className="text-blue-300">i</span>
             </span>
           </Link>
 
@@ -225,7 +225,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="block px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-all text-center"
+                  className="block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all text-center"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Get Started

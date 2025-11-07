@@ -321,6 +321,8 @@ export default function AnalyticsPage() {
               />
             </div>
           </motion.div>
+        )}
+
         {activeView === 'insights' && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
