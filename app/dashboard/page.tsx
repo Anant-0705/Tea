@@ -201,9 +201,13 @@ export default function DashboardPage() {
                   <h3 className="text-lg font-semibold text-white mb-4">Recent Meetings</h3>
                   <div className="space-y-4">
                     {recentMeetings.map((meeting) => (
-                      <div key={meeting.id} className="flex items-center justify-between p-4 bg-zinc-800/50 rounded-lg">
+                      <Link
+                        key={meeting.id}
+                        href={`/dashboard/meeting${meeting.id}`}
+                        className="flex items-center justify-between p-4 bg-zinc-800/50 rounded-lg hover:bg-zinc-700/50 transition-colors group"
+                      >
                         <div>
-                          <h4 className="text-white font-medium">{meeting.title}</h4>
+                          <h4 className="text-white font-medium group-hover:text-emerald-400 transition-colors">{meeting.title}</h4>
                           <p className="text-sm text-zinc-400">
                             {meeting.date} at {meeting.time} • {meeting.duration}
                           </p>
@@ -212,7 +216,7 @@ export default function DashboardPage() {
                           <div className="text-sm text-zinc-400">{meeting.actionItems} items</div>
                           <div className="text-xs text-emerald-400">{meeting.status}</div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </motion.div>
