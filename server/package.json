@@ -1,0 +1,16 @@
+{
+  "name": "autotrack-transcription-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for real-time transcription",
+  "main": "transcription-server.js",
+  "scripts": {
+    "start": "node transcription-server.js",
+    "dev": "node transcription-server.js"
+  },
+  "dependencies": {
+    "ws": "^8.14.2"
+  },
+  "keywords": ["websocket", "transcription", "real-time"],
+  "author": "AutoTrack AI",
+  "license": "MIT"
+}
