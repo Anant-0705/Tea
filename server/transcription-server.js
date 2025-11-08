@@ -372,29 +372,25 @@ class TranscriptionServer {
       return; // Wait for 2 people to join
     }
 
-    // Limit to 8 transcripts total
-    if (session.transcripts.length >= 8) {
-      return; // Already have 8 transcripts
+    // Limit to 4 transcripts total
+    if (session.transcripts.length >= 4) {
+      return; // Already have 4 transcripts
     }
 
-    // Only generate occasionally (10% chance per audio chunk)
-    if (Math.random() > 0.1) {
+    // Generate more frequently for demo (50% chance per audio chunk)
+    if (Math.random() > 0.5) {
       return;
     }
 
-    // Realistic conversation phrases (exactly 8)
+    // Realistic conversation phrases (exactly 4)
     const mockPhrases = [
       "Good morning everyone! Thanks for joining the meeting today.",
       "Hi, my name is Aaditya and I'll be leading this discussion.",
-      "Let's schedule our next meeting at 9 PM tomorrow. Does that work for everyone?",
-      "Can someone please send Anant a message about the project updates?",
-      "I think we should focus on the client requirements first.",
-      "The deadline is approaching, so we need to prioritize our tasks.",
-      "Great work on the presentation! The client will be impressed.",
-      "Let's wrap up for today. I'll send out the meeting notes shortly."
+      "Can someone please send Anant an email about the project updates?",
+      "Let's schedule our next meeting at 9 PM tomorrow. Does that work for everyone?"
     ];
 
-    const speakers = ['Aaditya', 'Client', 'Team Member'];
+    const speakers = ['Aaditya', 'Anant', 'Team Member'];
     
     // Use phrases in order (not random)
     const phraseIndex = session.transcripts.length;
@@ -404,10 +400,10 @@ class TranscriptionServer {
     let speaker;
     if (phraseIndex === 0 || phraseIndex === 1) {
       speaker = 'Aaditya'; // First 2 are from Aaditya
-    } else if (phraseIndex % 2 === 0) {
-      speaker = 'Client';
+    } else if (phraseIndex === 2) {
+      speaker = 'Anant'; // Third is from Anant
     } else {
-      speaker = 'Team Member';
+      speaker = 'Team Member'; // Fourth is from Team Member
     }
     
     const timestamp = new Date().toISOString();
@@ -440,7 +436,7 @@ class TranscriptionServer {
     // Store in Firestore
     this.storeTranscriptInFirestore(transcript);
     
-    console.log(`🎭 Mock transcript ${phraseIndex + 1}/8: "${phrase.substring(0, 50)}..." (${speaker})`);
+    console.log(`🎭 Mock transcript ${phraseIndex + 1}/4: "${phrase.substring(0, 50)}..." (${speaker})`);
   }
 
   async storeTranscriptInFirestore(transcript) {

@@ -8,10 +8,8 @@ import {
   Calendar,
   Clock,
   Users,
-  Video,
   FileText,
   TrendingUp,
-  CheckCircle,
   Download,
   Share,
   Play,
@@ -21,10 +19,12 @@ import {
   MessageSquare,
   BarChart3,
   PieChart,
-  Activity
+  Activity,
+  Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 import { getMeetingById, Meeting } from '@/lib/mock-data';
+import ActionExecutor from '@/components/ActionExecutor';
 
 export default function MeetingDetailPage() {
   const params = useParams();
@@ -32,13 +32,35 @@ export default function MeetingDetailPage() {
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState<any>(null);
+  const [loadingAnalysis, setLoadingAnalysis] = useState(false);
 
   useEffect(() => {
     if (meetingId) {
       const foundMeeting = getMeetingById(meetingId);
       setMeeting(foundMeeting || null);
+      
+      // Fetch AI analysis if available
+      fetchAnalysis();
     }
   }, [meetingId]);
+
+  const fetchAnalysis = async () => {
+    setLoadingAnalysis(true);
+    try {
+      const response = await fetch(`/api/meetings/${meetingId}/analysis`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setAiAnalysis(data);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching analysis:', error);
+    } finally {
+      setLoadingAnalysis(false);
+    }
+  };
 
   if (!meeting) {
     return (
@@ -81,6 +103,7 @@ export default function MeetingDetailPage() {
     { id: 'matrix', label: 'Interaction Matrix', icon: PieChart },
     { id: 'sentiment', label: 'Sentiment Analysis', icon: Activity },
     { id: 'actions', label: 'Action Items', icon: Target },
+    { id: 'ai-actions', label: 'AI Actions', icon: Sparkles },
     { id: 'mom', label: 'Minutes', icon: MessageSquare },
   ];
 
@@ -438,6 +461,68 @@ export default function MeetingDetailPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {activeTab === 'ai-actions' && (
+              <div>
+                {loadingAnalysis ? (
+                  <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-6 text-center">
+                    <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p className="text-zinc-400">Loading AI analysis...</p>
+                  </div>
+                ) : aiAnalysis && aiAnalysis.summary ? (
+                  <div className="space-y-6">
+                    {/* AI Summary */}
+                    <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-6">
+                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-blue-400" />
+                        AI-Generated Summary
+                      </h3>
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-zinc-400 mb-2">Executive Summary</h4>
+                          <p className="text-white">{aiAnalysis.summary.executiveSummary}</p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-zinc-400 mb-2">Detailed Report</h4>
+                          <p className="text-zinc-300">{aiAnalysis.summary.detailedReport}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Executor */}
+                    <ActionExecutor
+                      meetingId={meetingId}
+                      recommendedActions={aiAnalysis.summary.recommendedActions || []}
+                      actionItems={aiAnalysis.analysis?.actionItems || []}
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-6 text-center">
+                    <Sparkles className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
+                    <p className="text-zinc-400 mb-4">No AI analysis available yet</p>
+                    <button
+                      onClick={async () => {
+                        try {
+                          const response = await fetch('/api/meetings/analyze', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ meetingId }),
+                          });
+                          if (response.ok) {
+                            await fetchAnalysis();
+                          }
+                        } catch (error) {
+                          console.error('Error analyzing meeting:', error);
+                        }
+                      }}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Analyze Meeting with AI
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 

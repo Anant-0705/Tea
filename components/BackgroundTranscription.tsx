@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, X, Eye, EyeOff, Minimize2, Maximize2 } from 'lucide-react';
+import { Mic, X, Eye, EyeOff, Minimize2, Maximize2, Mail, Calendar, CheckCircle, XCircle, Loader2, Play } from 'lucide-react';
 
 interface BackgroundTranscriptionProps {
   onClose?: () => void;
@@ -17,7 +17,12 @@ export default function BackgroundTranscription({ onClose }: BackgroundTranscrip
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [meetingAnalysis, setMeetingAnalysis] = useState<any>(null);
+  const [meetingSummary, setMeetingSummary] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showActions, setShowActions] = useState(false);
+  const [actions, setActions] = useState<any[]>([]);
+  const [executingActions, setExecutingActions] = useState(false);
+  const [actionResults, setActionResults] = useState<any[]>([]);
   
   const wsRef = useRef<WebSocket | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -174,7 +179,11 @@ export default function BackgroundTranscription({ onClose }: BackgroundTranscrip
         const data = await response.json();
         console.log('✅ Meeting analysis complete:', data);
         setMeetingAnalysis(data.analysis);
+        setMeetingSummary(data.summary);
         setAnalysisComplete(true);
+        
+        // Auto-generate actions
+        generateActions(data.summary?.recommendedActions || [], data.analysis?.actionItems || []);
       } else {
         const error = await response.text();
         console.error('Analysis failed:', error);
@@ -189,6 +198,117 @@ export default function BackgroundTranscription({ onClose }: BackgroundTranscrip
 
     // Clean up
     localStorage.removeItem('activeTranscriptionSession');
+  };
+
+  const generateActions = (recommendedActions: string[], actionItems: any[]) => {
+    const generatedActions: any[] = [];
+
+    // Parse recommended actions
+    recommendedActions.forEach((recommendation, index) => {
+      const lowerRec = recommendation.toLowerCase();
+
+      // Detect email actions
+      if (lowerRec.includes('email') || lowerRec.includes('send') || lowerRec.includes('notify')) {
+        const emailMatch = recommendation.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/);
+        const recipient = emailMatch ? emailMatch[0] : 'anantsinghal2134@gmail.com';
+        
+        generatedActions.push({
+          id: `email-${index}`,
+          type: 'send_email',
+          description: recommendation,
+          data: {
+            recipient,
+            subject: `Follow-up: ${recommendation.substring(0, 50)}`,
+            body: recommendation,
+          }
+        });
+      }
+
+      // Detect meeting scheduling actions
+      if (lowerRec.includes('schedule') || lowerRec.includes('meeting') || lowerRec.includes('9 pm') || lowerRec.includes('9pm')) {
+        generatedActions.push({
+          id: `meeting-${index}`,
+          type: 'schedule_meeting',
+          description: recommendation,
+          data: {
+            title: recommendation.substring(0, 100),
+            participants: ['anantsinghal2134@gmail.com'],
+            date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
+            duration: 60,
+            description: recommendation,
+          }
+        });
+      }
+    });
+
+    // Convert action items to tasks
+    actionItems.forEach((item, index) => {
+      if (item.task) {
+        generatedActions.push({
+          id: `task-${index}`,
+          type: 'create_task',
+          description: item.task,
+          data: {
+            task: item.task,
+            assignee: item.assignee || 'anantsinghal2134@gmail.com',
+            priority: item.priority || 'medium',
+            dueDate: item.dueDate || null,
+          }
+        });
+      }
+    });
+
+    setActions(generatedActions);
+    if (generatedActions.length > 0) {
+      setShowActions(true);
+    }
+  };
+
+  const executeActions = async () => {
+    if (!sessionInfo || actions.length === 0) return;
+
+    setExecutingActions(true);
+    setActionResults([]);
+
+    try {
+      const response = await fetch('/api/meetings/execute-actions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          meetingId: sessionInfo.meetingId,
+          actions,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setActionResults(data.results);
+      } else {
+        setError('Failed to execute actions: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error executing actions:', error);
+      setError('Failed to execute actions');
+    } finally {
+      setExecutingActions(false);
+    }
+  };
+
+  const getActionIcon = (type: string) => {
+    switch (type) {
+      case 'send_email': return <Mail className="w-4 h-4" />;
+      case 'schedule_meeting': return <Calendar className="w-4 h-4" />;
+      default: return <CheckCircle className="w-4 h-4" />;
+    }
+  };
+
+  const getActionColor = (type: string) => {
+    switch (type) {
+      case 'send_email': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'schedule_meeting': return 'bg-green-500/20 text-green-400 border-green-500/30';
+      default: return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
+    }
   };
 
   if (!sessionInfo) return null;
@@ -431,6 +551,107 @@ export default function BackgroundTranscription({ onClose }: BackgroundTranscrip
                         </li>
                       ))}
                     </ol>
+                  </div>
+                )}
+
+                {/* Automated Actions */}
+                {showActions && actions.length > 0 && (
+                  <div className="bg-gradient-to-r from-emerald-900/30 to-blue-900/30 border border-emerald-500/30 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-white font-semibold">🤖 Automated Actions</h3>
+                      <button
+                        onClick={executeActions}
+                        disabled={executingActions || actionResults.length > 0}
+                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      >
+                        {executingActions ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Executing...
+                          </>
+                        ) : actionResults.length > 0 ? (
+                          <>
+                            <CheckCircle className="w-4 h-4" />
+                            Completed
+                          </>
+                        ) : (
+                          <>
+                            <Play className="w-4 h-4" />
+                            Execute All
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <div className="space-y-3">
+                      {actions.map((action) => {
+                        const result = actionResults.find(r => r.actionId === action.id);
+                        
+                        return (
+                          <div
+                            key={action.id}
+                            className={`border rounded-lg p-3 ${
+                              result 
+                                ? result.success 
+                                  ? 'border-green-500/30 bg-green-500/10' 
+                                  : 'border-red-500/30 bg-red-500/10'
+                                : 'border-zinc-700 bg-zinc-800/30'
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`p-2 rounded-lg border ${getActionColor(action.type)}`}>
+                                {getActionIcon(action.type)}
+                              </div>
+                              
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-2 mb-1">
+                                  <h4 className="text-white font-medium text-sm capitalize">
+                                    {action.type.replace('_', ' ')}
+                                  </h4>
+                                  {result && (
+                                    <div className="flex items-center gap-1">
+                                      {result.success ? (
+                                        <CheckCircle className="w-4 h-4 text-green-400" />
+                                      ) : (
+                                        <XCircle className="w-4 h-4 text-red-400" />
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                <p className="text-zinc-300 text-xs mb-2 line-clamp-2">{action.description}</p>
+                                
+                                {action.type === 'send_email' && (
+                                  <div className="text-xs text-zinc-500">
+                                    To: {action.data.recipient}
+                                  </div>
+                                )}
+                                
+                                {action.type === 'schedule_meeting' && (
+                                  <div className="text-xs text-zinc-500">
+                                    Participants: {action.data.participants.join(', ')}
+                                  </div>
+                                )}
+                                
+                                {result && (
+                                  <div className={`mt-2 text-xs ${result.success ? 'text-green-400' : 'text-red-400'}`}>
+                                    {result.success ? result.message : result.error}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {actionResults.length > 0 && (
+                      <div className="mt-4 p-3 bg-zinc-800/50 rounded-lg">
+                        <p className="text-sm text-zinc-300">
+                          <strong>Summary:</strong> {actionResults.filter(r => r.success).length} of {actionResults.length} actions completed successfully
+                        </p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
