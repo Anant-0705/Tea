@@ -38,9 +38,25 @@ export default function SchedulePage() {
     }
 
     try {
+      // Validate date and time
+      if (!formData.date || !formData.time) {
+        setError('Please select both date and time');
+        setLoading(false);
+        return;
+      }
+
       // Create ISO datetime strings
       const startDateTime = new Date(`${formData.date}T${formData.time}`);
-      const endDateTime = new Date(startDateTime.getTime() + parseInt(formData.duration) * 60000);
+      
+      // Check if date is valid
+      if (isNaN(startDateTime.getTime())) {
+        setError('Invalid date or time format');
+        setLoading(false);
+        return;
+      }
+
+      const duration = parseInt(formData.duration) || 30;
+      const endDateTime = new Date(startDateTime.getTime() + duration * 60000);
 
       const participants = formData.participants
         .split(',')
@@ -148,14 +164,57 @@ export default function SchedulePage() {
             )}
             
             <div className="space-y-3">
-              {meetingData.meeting?.id && (
-                <Link
-                  href={`/meeting?id=${meetingData.meeting.id}`}
-                  className="flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-full font-medium hover:bg-emerald-700 transition-all"
-                >
-                  <Video className="w-4 h-4" />
-                  Join Meeting Room
-                </Link>
+              {meetingData.meeting?.id && meetingData.meeting?.meetingLink && (
+                <>
+                  <button
+                    onClick={async () => {
+                      // Start transcription session
+                      try {
+                        const response = await fetch('/api/meetings/join', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ 
+                            meetingId: meetingData.meeting.id,
+                            action: 'join' 
+                          }),
+                        });
+
+                        if (response.ok) {
+                          const data = await response.json();
+                          console.log('✅ Transcription session started:', data.transcriptionSessionId);
+                          
+                          // Store session ID in localStorage for background transcription
+                          localStorage.setItem('activeTranscriptionSession', JSON.stringify({
+                            sessionId: data.transcriptionSessionId,
+                            meetingId: meetingData.meeting.id,
+                            meetingLink: meetingData.meeting.meetingLink,
+                            startTime: new Date().toISOString(),
+                          }));
+                          
+                          // Open Google Meet in new tab FIRST
+                          const meetWindow = window.open(meetingData.meeting.meetingLink, '_blank');
+                          
+                          // Wait a moment to ensure Google Meet opens
+                          setTimeout(() => {
+                            // Then navigate current tab to transcribe page
+                            window.location.href = '/transcribe';
+                          }, 500);
+                        }
+                      } catch (error) {
+                        console.error('Error starting transcription:', error);
+                        alert('Failed to start transcription. Opening Google Meet anyway...');
+                        window.open(meetingData.meeting.meetingLink, '_blank');
+                      }
+                    }}
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-full font-medium hover:bg-emerald-700 transition-all w-full"
+                  >
+                    <Video className="w-4 h-4" />
+                    Join Google Meet + Start Transcription
+                  </button>
+                  <div className="text-xs text-zinc-500 text-center">
+                    💡 Opens Google Meet in new tab & monitors transcription
+                  </div>
+                </>
               )}
               <Link
                 href="/dashboard"
@@ -300,6 +359,25 @@ export default function SchedulePage() {
 
               {/* Duration and Platform */}
               <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">
+                    <Clock className="inline w-4 h-4 mr-1" />
+                    Duration (minutes) *
+                  </label>
+                  <select
+                    name="duration"
+                    value={formData.duration}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600"
+                  >
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="90">1.5 hours</option>
+                    <option value="120">2 hours</option>
+                  </select>
+                </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-2">

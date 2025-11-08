@@ -169,13 +169,19 @@ export async function getMeetingTranscripts(meetingId: string) {
     const snapshot = await db
       .collection(collections.transcripts)
       .where('meetingId', '==', meetingId)
-      .orderBy('timestamp', 'asc')
       .get();
     
-    const transcripts = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as TranscriptDocument[];
+    // Sort in memory instead of using orderBy (which requires an index)
+    const transcripts = snapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .sort((a: any, b: any) => {
+        const timeA = new Date(a.timestamp).getTime();
+        const timeB = new Date(b.timestamp).getTime();
+        return timeA - timeB;
+      }) as TranscriptDocument[];
     
     return {
       success: true,

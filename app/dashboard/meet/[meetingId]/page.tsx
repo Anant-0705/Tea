@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { 
+import {
   ArrowLeft,
-  Calendar, 
-  Clock, 
-  Users, 
+  Calendar,
+  Clock,
+  Users,
   Video,
   FileText,
   TrendingUp,
@@ -21,8 +21,7 @@ import {
   MessageSquare,
   BarChart3,
   PieChart,
-  Activity,
-  Zap
+  Activity
 } from 'lucide-react';
 import Link from 'next/link';
 import { getMeetingById, Meeting } from '@/lib/mock-data';
@@ -101,7 +100,7 @@ export default function MeetingDetailPage() {
             >
               <ArrowLeft className="w-5 h-5 text-zinc-400" />
             </Link>
-            
+
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-2xl md:text-3xl font-bold text-white">
@@ -177,11 +176,10 @@ export default function MeetingDetailPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    activeTab === tab.id
-                      ? 'bg-blue-600 text-white'
-                      : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
-                  }`}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
+                    ? 'bg-blue-600 text-white'
+                    : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
+                    }`}
                 >
                   <tab.icon className="w-4 h-4" />
                   {tab.label}
@@ -229,21 +227,21 @@ export default function MeetingDetailPage() {
                         </div>
                         <div className="text-xs text-zinc-400">Avg Sentiment</div>
                       </div>
-                      
+
                       <div className="text-center p-4 bg-zinc-800/30 rounded-lg">
                         <div className="text-2xl font-bold text-blue-400 mb-1">
                           {meeting.analytics.speakingTime ? Object.keys(meeting.analytics.speakingTime).length : 0}
                         </div>
                         <div className="text-xs text-zinc-400">Active Speakers</div>
                       </div>
-                      
+
                       <div className="text-center p-4 bg-zinc-800/30 rounded-lg">
                         <div className="text-2xl font-bold text-purple-400 mb-1">
                           {meeting.analytics.keyTopics?.length || 0}
                         </div>
                         <div className="text-xs text-zinc-400">Key Topics</div>
                       </div>
-                      
+
                       <div className="text-center p-4 bg-zinc-800/30 rounded-lg">
                         <div className="text-2xl font-bold text-orange-400 mb-1">
                           {meeting.actionItems.length}
@@ -273,7 +271,7 @@ export default function MeetingDetailPage() {
                     </button>
                   </div>
                 </div>
-                
+
                 {meeting.transcript ? (
                   <div className="max-h-96 overflow-y-auto space-y-4 pr-2">
                     {meeting.transcript.split('\n\n').map((paragraph, index) => (
@@ -318,9 +316,9 @@ export default function MeetingDetailPage() {
                           <span className="text-white">{name}</span>
                           <div className="flex items-center gap-3">
                             <div className="w-32 h-2 bg-zinc-700 rounded-full overflow-hidden">
-                              <div 
-                            className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
-                            style={{ width: `${meeting.analytics?.speakingTime ? (time as number / Math.max(...Object.values(meeting.analytics.speakingTime))) * 100 : 0}%` }}
+                              <div
+                                className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
+                                style={{ width: `${meeting.analytics?.speakingTime ? (time as number / Math.max(...Object.values(meeting.analytics.speakingTime))) * 100 : 0}%` }}
                               />
                             </div>
                             <span className="text-zinc-400 text-sm w-12">{time}min</span>
@@ -354,14 +352,13 @@ export default function MeetingDetailPage() {
                           <td className="text-white py-2 pr-4">{participant.name.split(' ')[0]}</td>
                           {meeting.participants.map((_, j) => (
                             <td key={j} className="text-center py-2">
-                              <div className={`w-8 h-8 rounded-lg mx-auto flex items-center justify-center text-xs font-medium ${
-                                i === j ? 'bg-zinc-700 text-zinc-500' :
+                              <div className={`w-8 h-8 rounded-lg mx-auto flex items-center justify-center text-xs font-medium ${i === j ? 'bg-zinc-700 text-zinc-500' :
                                 meeting.analytics?.interactionMatrix[i] && meeting.analytics.interactionMatrix[i][j] > 5 ?
-                                'bg-emerald-500/20 text-emerald-400' :
-                                meeting.analytics?.interactionMatrix[i] && meeting.analytics.interactionMatrix[i][j] > 2 ?
-                                'bg-yellow-500/20 text-yellow-400' :
-                                'bg-zinc-800/50 text-zinc-600'
-                              }`}>
+                                  'bg-emerald-500/20 text-emerald-400' :
+                                  meeting.analytics?.interactionMatrix[i] && meeting.analytics.interactionMatrix[i][j] > 2 ?
+                                    'bg-yellow-500/20 text-yellow-400' :
+                                    'bg-zinc-800/50 text-zinc-600'
+                                }`}>
                                 {i === j ? '-' : meeting.analytics?.interactionMatrix[i]?.[j] || 0}
                               </div>
                             </td>
@@ -397,20 +394,18 @@ export default function MeetingDetailPage() {
                       <span className="text-zinc-400 text-sm w-16">{point.timestamp}</span>
                       <div className="flex-1 flex items-center gap-2">
                         <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full rounded-full transition-all duration-300 ${
-                              point.sentiment >= 0.7 ? 'bg-gradient-to-r from-emerald-500 to-green-400' :
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${point.sentiment >= 0.7 ? 'bg-gradient-to-r from-emerald-500 to-green-400' :
                               point.sentiment >= 0.4 ? 'bg-gradient-to-r from-yellow-500 to-orange-400' :
-                              'bg-gradient-to-r from-red-500 to-pink-400'
-                            }`}
+                                'bg-gradient-to-r from-red-500 to-pink-400'
+                              }`}
                             style={{ width: `${point.sentiment * 100}%` }}
                           />
                         </div>
-                        <span className={`text-sm font-medium w-12 ${
-                          point.sentiment >= 0.7 ? 'text-emerald-400' :
+                        <span className={`text-sm font-medium w-12 ${point.sentiment >= 0.7 ? 'text-emerald-400' :
                           point.sentiment >= 0.4 ? 'text-yellow-400' :
-                          'text-red-400'
-                        }`}>
+                            'text-red-400'
+                          }`}>
                           {Math.round(point.sentiment * 100)}%
                         </span>
                       </div>
@@ -432,11 +427,10 @@ export default function MeetingDetailPage() {
                         <div className="flex items-center gap-4 text-sm text-zinc-400">
                           <span>Assigned to: {action.assignee}</span>
                           <span>Due: {action.dueDate}</span>
-                          <span className={`px-2 py-1 rounded text-xs ${
-                            action.priority === 'high' ? 'bg-red-500/20 text-red-400' :
+                          <span className={`px-2 py-1 rounded text-xs ${action.priority === 'high' ? 'bg-red-500/20 text-red-400' :
                             action.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                            'bg-blue-500/20 text-blue-400'
-                          }`}>
+                              'bg-blue-500/20 text-blue-400'
+                            }`}>
                             {action.priority} priority
                           </span>
                         </div>
@@ -457,7 +451,7 @@ export default function MeetingDetailPage() {
                   </button>
                 </div>
                 <div className="prose prose-invert max-w-none">
-                  <div 
+                  <div
                     className="text-zinc-300 leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: meeting.minutesOfMeeting.replace(/\n/g, '<br />') }}
                   />

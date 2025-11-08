@@ -18,8 +18,11 @@ export function createVertexAIClient() {
 
   const vertex_ai = new VertexAI({
     project: credentials.project_id,
-    location: 'us-central1', // You can change this to your preferred region
-    credentials,
+    location: process.env.VERTEX_AI_LOCATION || 'us-central1',
+    googleAuthOptions: {
+      credentials: credentials,
+      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    },
   });
 
   return vertex_ai;
@@ -28,9 +31,9 @@ export function createVertexAIClient() {
 // Interfaces for structured analysis
 export interface ActionItem {
   task: string;
-  assignee?: string;
+  assignee?: string | null;
   priority: 'low' | 'medium' | 'high';
-  dueDate?: string;
+  dueDate?: string | null;
   status: 'pending' | 'in-progress' | 'completed';
 }
 
@@ -38,8 +41,8 @@ export interface MeetingInsight {
   type: 'decision' | 'concern' | 'opportunity' | 'risk' | 'follow-up';
   content: string;
   confidence: number;
-  timestamp?: string;
-  speaker?: string;
+  timestamp?: string | null;
+  speaker?: string | null;
 }
 
 export interface SentimentAnalysis {
@@ -80,9 +83,9 @@ export async function analyzeTranscriptWithVertexAI(
   try {
     const vertex_ai = createVertexAIClient();
     
-    // Get the Gemini model
-    const model = 'gemini-1.5-pro-preview-0409';
-    const generativeModel = vertex_ai.preview.getGenerativeModel({
+    // Get the Gemini model - using Gemini 2.5 Flash
+    const model = 'gemini-2.0-flash-exp';
+    const generativeModel = vertex_ai.getGenerativeModel({
       model: model,
       generation_config: {
         max_output_tokens: 8192,
@@ -157,8 +160,17 @@ Be thorough but concise. Ensure all action items are specific and measurable.
 `;
 
     const result = await generativeModel.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const response = result.response;
+    
+    // Handle different response formats
+    let text: string;
+    if (typeof response.text === 'function') {
+      text = response.text();
+    } else if (response.candidates && response.candidates[0]) {
+      text = response.candidates[0].content.parts[0].text;
+    } else {
+      throw new Error('Unexpected response format from Vertex AI');
+    }
 
     // Try to parse the JSON response
     try {
@@ -170,8 +182,8 @@ Be thorough but concise. Ensure all action items are specific and measurable.
 
       const analysis: TranscriptAnalysis = JSON.parse(jsonMatch[0]);
       
-      // Validate and sanitize the response
-      return {
+      // Validate and sanitize the response - remove undefined values
+      return sanitizeAnalysis({
         actionItems: Array.isArray(analysis.actionItems) ? analysis.actionItems : [],
         insights: Array.isArray(analysis.insights) ? analysis.insights : [],
         sentiment: analysis.sentiment || {
@@ -188,7 +200,7 @@ Be thorough but concise. Ensure all action items are specific and measurable.
           risks: [],
           mitigation: []
         }
-      };
+      });
     } catch (parseError) {
       console.error('Error parsing Vertex AI response:', parseError);
       console.error('Raw response:', text);
@@ -204,19 +216,26 @@ Be thorough but concise. Ensure all action items are specific and measurable.
   }
 }
 
+// Sanitize analysis to remove undefined values (Firestore doesn't accept undefined)
+function sanitizeAnalysis(analysis: TranscriptAnalysis): TranscriptAnalysis {
+  return JSON.parse(JSON.stringify(analysis, (key, value) => {
+    // Replace undefined with null or remove the property
+    return value === undefined ? null : value;
+  }));
+}
+
 // Create a fallback analysis when Vertex AI is not available
 function createFallbackAnalysis(transcript: string, participants: string[]): TranscriptAnalysis {
   const words = transcript.split(' ');
   const keyTopics = extractKeyTopics(transcript);
   
-  return {
+  return sanitizeAnalysis({
     actionItems: extractBasicActionItems(transcript),
     insights: [
       {
         type: 'follow-up',
         content: 'Meeting transcript has been recorded for further analysis',
         confidence: 1.0,
-        speaker: undefined
       }
     ],
     sentiment: {
@@ -237,7 +256,7 @@ function createFallbackAnalysis(transcript: string, participants: string[]): Tra
       risks: [],
       mitigation: []
     }
-  };
+  });
 }
 
 // Extract basic action items using simple keyword matching
@@ -254,11 +273,13 @@ function extractBasicActionItems(transcript: string): ActionItem[] {
   sentences.forEach(sentence => {
     const lowerSentence = sentence.toLowerCase();
     if (actionKeywords.some(keyword => lowerSentence.includes(keyword))) {
-      actionItems.push({
+      const item: ActionItem = {
         task: sentence.trim(),
         priority: 'medium',
         status: 'pending'
-      });
+      };
+      // Only add defined optional fields
+      actionItems.push(item);
     }
   });
 
@@ -313,8 +334,8 @@ export async function generateMeetingSummary(
   try {
     const vertex_ai = createVertexAIClient();
     
-    const model = 'gemini-1.5-pro-preview-0409';
-    const generativeModel = vertex_ai.preview.getGenerativeModel({
+    const model = 'gemini-2.0-flash-exp';
+    const generativeModel = vertex_ai.getGenerativeModel({
       model: model,
       generation_config: {
         max_output_tokens: 4096,
@@ -354,8 +375,17 @@ Format as JSON:
 `;
 
     const result = await generativeModel.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const response = result.response;
+    
+    // Handle different response formats
+    let text: string;
+    if (typeof response.text === 'function') {
+      text = response.text();
+    } else if (response.candidates && response.candidates[0]) {
+      text = response.candidates[0].content.parts[0].text;
+    } else {
+      throw new Error('Unexpected response format from Vertex AI');
+    }
 
     try {
       const jsonMatch = text.match(/\{[\s\S]*\}/);

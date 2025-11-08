@@ -5,14 +5,26 @@ import { NextAuthOptions } from 'next-auth';
 export const calendar = google.calendar('v3');
 
 // Helper function to get authenticated calendar client
-export async function getCalendarClient(accessToken: string) {
+export async function getCalendarClient(accessToken: string, refreshToken?: string) {
   const auth = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.NEXTAUTH_URL
   );
   
   auth.setCredentials({
     access_token: accessToken,
+    refresh_token: refreshToken,
+  });
+
+  // Automatically refresh token if expired
+  auth.on('tokens', (tokens) => {
+    if (tokens.refresh_token) {
+      console.log('🔄 Refresh token received');
+    }
+    if (tokens.access_token) {
+      console.log('✅ Access token refreshed');
+    }
   });
 
   return google.calendar({ version: 'v3', auth });

@@ -41,6 +41,8 @@ export default function MeetingRoom() {
   const [transcriptSession, setTranscriptSession] = useState<string>('');
   const [meetingAnalysis, setMeetingAnalysis] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasJoined, setHasJoined] = useState(false);
+  const [autoTranscriptionEnabled, setAutoTranscriptionEnabled] = useState(true);
 
   // Fetch meeting data
   useEffect(() => {
@@ -76,6 +78,34 @@ export default function MeetingRoom() {
     fetchMeetingData();
   }, [meetingId, session]);
 
+  // Auto-join meeting and start transcription
+  const joinMeeting = async () => {
+    if (!meetingId || hasJoined) return;
+
+    try {
+      const response = await fetch(`/api/meetings/${meetingId}/join`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'join' }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setHasJoined(true);
+        setTranscriptSession(data.transcriptionSessionId);
+        
+        // Auto-start recording if enabled
+        if (autoTranscriptionEnabled) {
+          setIsRecording(true);
+        }
+        
+        console.log('✅ Joined meeting and started transcription:', data.transcriptionSessionId);
+      }
+    } catch (error) {
+      console.error('Error joining meeting:', error);
+    }
+  };
+
   const toggleRecording = () => {
     setIsRecording(!isRecording);
   };
@@ -85,9 +115,24 @@ export default function MeetingRoom() {
     console.log('Transcription session started:', sessionId);
   };
 
-  const handleTranscriptionEnd = (analysis: any) => {
+  const handleTranscriptionEnd = async (analysis: any) => {
     setMeetingAnalysis(analysis);
     console.log('Meeting analysis:', analysis);
+    
+    // Trigger Vertex AI analysis
+    try {
+      const response = await fetch(`/api/meetings/${meetingId}/analyze`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Vertex AI analysis complete:', data);
+        setMeetingAnalysis(data.analysis);
+      }
+    } catch (error) {
+      console.error('Error analyzing meeting:', error);
+    }
   };
 
   const joinGoogleMeet = () => {
@@ -96,12 +141,26 @@ export default function MeetingRoom() {
     }
   };
 
-  const endMeeting = () => {
+  const endMeeting = async () => {
     if (isRecording) {
       setIsRecording(false);
     }
-    // In a real app, you might want to redirect to a summary page
-    window.history.back();
+    
+    // Leave meeting and trigger analysis
+    if (hasJoined && meetingId) {
+      try {
+        await fetch(`/api/meetings/${meetingId}/join`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'leave' }),
+        });
+      } catch (error) {
+        console.error('Error leaving meeting:', error);
+      }
+    }
+    
+    // Redirect to meeting details page
+    window.location.href = `/dashboard/meet/${meetingId}`;
   };
 
   if (isLoading) {
@@ -205,21 +264,52 @@ export default function MeetingRoom() {
           <div className="lg:col-span-2">
             <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-6 h-96 flex items-center justify-center">
               <div className="text-center">
-                <Video className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-zinc-300 mb-2">Video Conference</h3>
-                <p className="text-zinc-500 mb-4">
-                  Click "Join Meet" to start the video conference
-                </p>
-                <div className="flex items-center justify-center space-x-4 text-sm text-zinc-400">
-                  <div className="flex items-center space-x-1">
-                    <Users className="w-4 h-4" />
-                    <span>{meetingData.participants.length} participants</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>Ready to join</span>
-                  </div>
-                </div>
+                {!hasJoined ? (
+                  <>
+                    <Video className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-zinc-300 mb-2">Ready to Join</h3>
+                    <p className="text-zinc-500 mb-6">
+                      Click below to join the meeting and start automatic transcription
+                    </p>
+                    <button
+                      onClick={joinMeeting}
+                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center space-x-2 mx-auto mb-4"
+                    >
+                      <Video className="w-5 h-5" />
+                      <span>Join Meeting & Start Transcription</span>
+                    </button>
+                    <div className="flex items-center justify-center space-x-4 text-sm text-zinc-400">
+                      <div className="flex items-center space-x-1">
+                        <Users className="w-4 h-4" />
+                        <span>{meetingData.participants.length} participants</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                        <span>Ready to join</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Video className="w-8 h-8 text-emerald-500" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-emerald-300 mb-2">Meeting Active</h3>
+                    <p className="text-zinc-500 mb-4">
+                      Transcription is running. Check the side panel for live transcripts.
+                    </p>
+                    <div className="flex items-center justify-center space-x-4 text-sm">
+                      <div className="flex items-center space-x-1 text-emerald-400">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span>Recording</span>
+                      </div>
+                      <div className="flex items-center space-x-1 text-zinc-400">
+                        <Users className="w-4 h-4" />
+                        <span>{meetingData.participants.length} participants</span>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
