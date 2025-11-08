@@ -63,7 +63,7 @@ const AutomationDashboard: React.FC = () => {
         setRecentActivity(data.recentActivity || []);
       }
     } catch (error) {
-      console.error('Failed to load automation stats:', error);
+      // Error handling without console logging
     }
     setLoading(false);
   };
@@ -321,7 +321,6 @@ const AutomationDashboard: React.FC = () => {
             <SmartScheduling 
               meetingId="demo-meeting-id"
               onScheduleSuccess={(meetingId, calendarEventId) => {
-                console.log('Meeting scheduled:', { meetingId, calendarEventId });
                 loadStats(); // Refresh stats
               }}
             />

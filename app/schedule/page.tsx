@@ -86,13 +86,7 @@ export default function SchedulePage() {
 
       setMeetingData(result);
       setSubmitted(true);
-      
-      // Log email invitation results
-      if (result.emailInvitations) {
-        console.log(`📧 Email invitations: ${result.emailInvitations.sent}/${result.emailInvitations.total} sent successfully`);
-      }
     } catch (error) {
-      console.error('Error creating meeting:', error);
       setError(error instanceof Error ? error.message : 'Failed to create meeting');
     } finally {
       setLoading(false);
@@ -181,7 +175,6 @@ export default function SchedulePage() {
 
                         if (response.ok) {
                           const data = await response.json();
-                          console.log('✅ Transcription session started:', data.transcriptionSessionId);
                           
                           // Store session ID in localStorage for background transcription
                           localStorage.setItem('activeTranscriptionSession', JSON.stringify({
@@ -201,7 +194,6 @@ export default function SchedulePage() {
                           }, 500);
                         }
                       } catch (error) {
-                        console.error('Error starting transcription:', error);
                         alert('Failed to start transcription. Opening Google Meet anyway...');
                         window.open(meetingData.meeting.meetingLink, '_blank');
                       }
@@ -432,41 +424,7 @@ export default function SchedulePage() {
               </div>
 
               {/* AI Features */}
-              <div className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">🤖 AI Features & Automation</h3>
-                <div className="grid md:grid-cols-2 gap-3 text-sm text-zinc-400">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-500" />
-                    Real-time transcription
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-500" />
-                    Sentiment analysis
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-500" />
-                    Action item extraction
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-500" />
-                    Automatic task creation
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-500" />
-                    Meeting summary generation
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-500" />
-                    📧 Auto email invitations
-                  </div>
-                </div>
-                <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                  <p className="text-xs text-blue-400">
-                    💌 <strong>Email Automation:</strong> Professional invitation emails will be automatically sent to all participants with meeting details, calendar integration, and join links.
-                  </p>
-                </div>
-              </div>
-
+              
               {/* Submit Button */}
               <button
                 type="submit"

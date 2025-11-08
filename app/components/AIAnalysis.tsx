@@ -67,7 +67,7 @@ export default function AIAnalysis({ meetingId, onAnalysisComplete }: AIAnalysis
         setTranscriptCount(data.transcriptCount);
       }
     } catch (error) {
-      console.error('Error checking analysis readiness:', error);
+      // Error handling without console logging
     }
   };
 
@@ -96,7 +96,6 @@ export default function AIAnalysis({ meetingId, onAnalysisComplete }: AIAnalysis
       setAnalysis(data.analysis);
       onAnalysisComplete?.(data.analysis);
     } catch (error) {
-      console.error('Error running analysis:', error);
       setError(error instanceof Error ? error.message : 'Analysis failed');
     } finally {
       setLoading(false);

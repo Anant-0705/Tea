@@ -70,7 +70,6 @@ export default function MeetingRoom() {
         setMeetingData(mockMeetingData);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching meeting data:', error);
         setIsLoading(false);
       }
     };
@@ -98,11 +97,9 @@ export default function MeetingRoom() {
         if (autoTranscriptionEnabled) {
           setIsRecording(true);
         }
-        
-        console.log('✅ Joined meeting and started transcription:', data.transcriptionSessionId);
       }
     } catch (error) {
-      console.error('Error joining meeting:', error);
+      // Error handling without console logging
     }
   };
 
@@ -112,12 +109,10 @@ export default function MeetingRoom() {
 
   const handleTranscriptionStart = (sessionId: string) => {
     setTranscriptSession(sessionId);
-    console.log('Transcription session started:', sessionId);
   };
 
   const handleTranscriptionEnd = async (analysis: any) => {
     setMeetingAnalysis(analysis);
-    console.log('Meeting analysis:', analysis);
     
     // Trigger Vertex AI analysis
     try {
@@ -127,11 +122,10 @@ export default function MeetingRoom() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('✅ Vertex AI analysis complete:', data);
         setMeetingAnalysis(data.analysis);
       }
     } catch (error) {
-      console.error('Error analyzing meeting:', error);
+      // Error handling without console logging
     }
   };
 
@@ -155,7 +149,7 @@ export default function MeetingRoom() {
           body: JSON.stringify({ action: 'leave' }),
         });
       } catch (error) {
-        console.error('Error leaving meeting:', error);
+        // Error handling without console logging
       }
     }
     
@@ -375,7 +369,7 @@ export default function MeetingRoom() {
                     meetingId={meetingData.id}
                     participants={meetingData.participants}
                     onTranscriptUpdate={(transcript) => {
-                      console.log('New transcript:', transcript);
+                      // Handle transcript updates silently
                     }}
                     onSessionStart={handleTranscriptionStart}
                     onSessionEnd={handleTranscriptionEnd}

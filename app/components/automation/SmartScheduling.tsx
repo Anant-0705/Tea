@@ -92,7 +92,7 @@ const SmartScheduling: React.FC<SmartSchedulingProps> = ({
         setSuggestions(data.suggestions || []);
       }
     } catch (error) {
-      console.error('Failed to load scheduling suggestions:', error);
+      // Error handling without console logging
     }
     setLoading(false);
   };

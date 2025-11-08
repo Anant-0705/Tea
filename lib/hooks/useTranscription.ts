@@ -41,7 +41,6 @@ export function useTranscription({
       const ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
-        console.log('✅ Connected to transcription server');
         setIsConnected(true);
         setError(null);
       };
@@ -52,7 +51,6 @@ export function useTranscription({
           
           switch (data.type) {
             case 'connected':
-              console.log('📞 Transcription service ready:', data.clientId);
               break;
               
             case 'transcript':
@@ -69,36 +67,31 @@ export function useTranscription({
               break;
               
             case 'meeting_started':
-              console.log('📝 Meeting transcription started:', data.meetingId);
               break;
               
             case 'meeting_ended':
-              console.log('✅ Meeting transcription ended:', data.transcriptCount, 'transcripts');
               onMeetingEnd?.(data.transcriptCount);
               break;
               
             default:
-              console.log('Received message:', data);
+              break;
           }
         } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+          setError('Failed to parse server response');
         }
       };
 
       ws.onerror = (error) => {
-        console.error('❌ WebSocket error:', error);
         setError('Connection error');
         onError?.(new Error('WebSocket connection error'));
       };
 
       ws.onclose = () => {
-        console.log('📞 Disconnected from transcription server');
         setIsConnected(false);
       };
 
       wsRef.current = ws;
     } catch (error) {
-      console.error('Error connecting to WebSocket:', error);
       setError('Failed to connect');
       onError?.(error as Error);
     }
@@ -144,10 +137,7 @@ export function useTranscription({
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
       setError(null);
-      
-      console.log('🎙️ Recording started');
     } catch (error) {
-      console.error('Error starting recording:', error);
       setError('Failed to start recording');
       onError?.(error as Error);
     }
@@ -170,8 +160,6 @@ export function useTranscription({
 
     setIsRecording(false);
     audioChunksRef.current = [];
-    
-    console.log('⏹️ Recording stopped');
   }, [meetingId]);
 
   // Disconnect from server
