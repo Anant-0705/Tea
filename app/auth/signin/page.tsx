@@ -74,17 +74,17 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center px-6">
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
       <div className="max-w-md w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Sign in to AutoTrack
+          <h1 className="text-3xl font-bold text-black mb-2">
+            Sign in to TEAi
           </h1>
-          <p className="text-zinc-400">
+          <p className="text-gray-600">
             Access your meeting analytics and automation tools
           </p>
         </motion.div>
@@ -93,11 +93,11 @@ export default function SignInPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-linear-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-2xl p-8"
+          className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg"
         >
           {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-              <p className="text-red-400 text-sm text-center">{error}</p>
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm text-center">{error}</p>
             </div>
           )}
 
@@ -106,7 +106,7 @@ export default function SignInPage() {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full px-6 py-4 bg-white hover:bg-zinc-100 disabled:bg-zinc-700 disabled:cursor-not-allowed text-black disabled:text-zinc-400 rounded-lg font-medium transition-all hover:shadow-lg flex items-center justify-center gap-3"
+              className="w-full px-6 py-4 bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white disabled:text-gray-500 rounded-lg font-medium transition-all hover:shadow-lg flex items-center justify-center gap-3"
             >
               {loading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
@@ -124,12 +124,12 @@ export default function SignInPage() {
             </button>
             
             <div className="mt-4 text-center">
-              <div className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-3">
-                <div className="flex items-center justify-center gap-2 text-xs text-zinc-400 mb-2">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                <div className="flex items-center justify-center gap-2 text-xs text-gray-600 mb-2">
                   <Shield className="w-4 h-4" />
                   Google Sign-in provides access to:
                 </div>
-                <div className="space-y-1 text-xs text-zinc-500">
+                <div className="space-y-1 text-xs text-gray-500">
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-3 h-3 text-emerald-500" />
                     Calendar integration for meeting scheduling
@@ -149,37 +149,37 @@ export default function SignInPage() {
 
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-zinc-700"></div>
+              <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-zinc-900 px-2 text-zinc-500">Or continue with email</span>
+              <span className="bg-white px-2 text-gray-500">Or continue with email</span>
             </div>
           </div>
 
           {/* Email Sign In */}
           <form onSubmit={handleCredentialsSignIn} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
               </label>
               <input
                 name="email"
                 type="email"
                 required
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600"
-                placeholder="test@autotrack.com"
+                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                placeholder="test@teai.com"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
               <input
                 name="password"
                 type="password"
                 required
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600"
+                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 placeholder="test123"
               />
             </div>
@@ -187,7 +187,7 @@ export default function SignInPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-6 py-3 bg-zinc-800 hover:bg-zinc-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white disabled:text-zinc-400 rounded-lg font-medium transition-all flex items-center justify-center gap-2"
+              className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 disabled:bg-gray-100 disabled:cursor-not-allowed text-black disabled:text-gray-400 rounded-lg font-medium transition-all flex items-center justify-center gap-2 border border-gray-200"
             >
               {loading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
@@ -201,9 +201,9 @@ export default function SignInPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
-              <p className="text-blue-400 text-xs">
-                Demo credentials: test@autotrack.com / test123
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-blue-600 text-xs">
+                Demo credentials: test@teai.com / test123
               </p>
             </div>
           </div>
@@ -213,7 +213,7 @@ export default function SignInPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-6 text-center text-sm text-zinc-500"
+          className="mt-6 text-center text-sm text-gray-500"
         >
           <p>
             By signing in, you agree to our Terms of Service and Privacy Policy.

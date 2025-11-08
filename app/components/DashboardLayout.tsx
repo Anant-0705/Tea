@@ -45,7 +45,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Dashboard/app pages layout
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-white">
       {/* Sidebar - Hidden on mobile */}
       {!isMobile && showSidebar && <Sidebar />}
       

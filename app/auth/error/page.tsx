@@ -38,32 +38,32 @@ export default function AuthErrorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center px-6">
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-linear-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-2xl p-8"
+          className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg"
         >
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-red-500/10 flex items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-red-50 flex items-center justify-center border border-red-200">
             <AlertCircle className="w-8 h-8 text-red-500" />
           </div>
           
-          <h1 className="text-2xl font-bold text-white mb-4">
+          <h1 className="text-2xl font-bold text-black mb-4">
             Authentication Error
           </h1>
           
-          <p className="text-zinc-400 mb-2">
+          <p className="text-gray-600 mb-2">
             {getErrorMessage(error)}
           </p>
           
-          <p className="text-zinc-500 text-sm mb-8">
+          <p className="text-gray-500 text-sm mb-8">
             {getErrorDetails(error)}
           </p>
 
           {error && (
-            <div className="mb-6 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-              <p className="text-red-400 text-xs font-mono">
+            <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-xs font-mono">
                 Error Code: {error}
               </p>
             </div>
@@ -72,7 +72,7 @@ export default function AuthErrorPage() {
           <div className="space-y-3">
             <Link
               href="/auth/signin"
-              className="px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-zinc-200 transition-all flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-emerald-500 text-white rounded-lg font-medium hover:bg-emerald-600 transition-all flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               Try Signing In Again
@@ -80,7 +80,7 @@ export default function AuthErrorPage() {
             
             <Link
               href="/"
-              className="px-6 py-3 bg-zinc-800 text-white rounded-lg font-medium hover:bg-zinc-700 transition-all flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-gray-100 text-black rounded-lg font-medium hover:bg-gray-200 transition-all flex items-center justify-center gap-2 border border-gray-200"
             >
               <Home className="w-4 h-4" />
               Go Home
@@ -88,11 +88,11 @@ export default function AuthErrorPage() {
           </div>
         </motion.div>
 
-        <div className="mt-6 text-center text-sm text-zinc-500">
+        <div className="mt-6 text-center text-sm text-gray-500">
           <p>
             Need help? Contact{' '}
-            <a href="mailto:support@autotrack.com" className="text-blue-400 hover:text-blue-300">
-              support@autotrack.com
+            <a href="mailto:support@teai.com" className="text-emerald-500 hover:text-emerald-600">
+              support@teai.com
             </a>
           </p>
         </div>
