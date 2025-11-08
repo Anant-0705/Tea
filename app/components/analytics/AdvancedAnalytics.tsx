@@ -101,38 +101,38 @@ const AdvancedAnalytics: React.FC = () => {
   };
 
   const getScoreColor = (score: number): string => {
-    if (score >= 80) return 'text-green-400';
-    if (score >= 60) return 'text-yellow-400';
-    return 'text-red-400';
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
   const getTrendIcon = (current: number, previous: number) => {
     const change = ((current - previous) / previous) * 100;
-    if (change > 5) return <ChevronUp className="w-4 h-4 text-green-400" />;
-    if (change < -5) return <ChevronDown className="w-4 h-4 text-red-400" />;
-    return <ChevronUp className="w-4 h-4 text-gray-400" />;
+    if (change > 5) return <ChevronUp className="w-4 h-4 text-green-600" />;
+    if (change < -5) return <ChevronDown className="w-4 h-4 text-red-600" />;
+    return <ChevronUp className="w-4 h-4 text-gray-600" />;
   };
 
   if (loading || !analyticsData) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-12 h-12 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-6">
+    <div className="min-h-screen bg-white text-black p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="p-3 bg-linear-to-r from-blue-500 to-purple-600 rounded-lg">
+            <div className="p-3 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg">
               <BarChart3 className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white">Advanced Analytics</h1>
-              <p className="text-gray-400">Deep insights into meeting effectiveness and automation ROI</p>
+              <h1 className="text-3xl font-bold text-black">Advanced Analytics</h1>
+              <p className="text-gray-600">Deep insights into meeting effectiveness and automation ROI</p>
             </div>
           </div>
           
@@ -140,7 +140,7 @@ const AdvancedAnalytics: React.FC = () => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg border border-gray-700 focus:border-blue-500 focus:outline-none"
+              className="px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-300 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             >
               <option value="7d">Last 7 Days</option>
               <option value="30d">Last 30 Days</option>
@@ -150,13 +150,13 @@ const AdvancedAnalytics: React.FC = () => {
             
             <button
               onClick={loadAnalytics}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors flex items-center space-x-2"
             >
               <RefreshCw className="w-4 h-4" />
               <span>Refresh</span>
             </button>
             
-            <button className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors flex items-center space-x-2">
+            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2 border border-gray-200">
               <Download className="w-4 h-4" />
               <span>Export</span>
             </button>
@@ -168,76 +168,76 @@ const AdvancedAnalytics: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-900/50 rounded-lg p-6 border border-gray-800"
+            className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-blue-500/10 rounded-lg">
-                <Calendar className="w-6 h-6 text-blue-400" />
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Calendar className="w-6 h-6 text-blue-600" />
               </div>
               {getTrendIcon(analyticsData.overview.totalMeetings, 200)}
             </div>
-            <div className="text-3xl font-bold text-white mb-1">
+            <div className="text-3xl font-bold text-black mb-1">
               {formatNumber(analyticsData.overview.totalMeetings)}
             </div>
-            <div className="text-sm text-gray-400">Total Meetings</div>
-            <div className="text-xs text-green-400 mt-2">+12% from last period</div>
+            <div className="text-sm text-gray-600">Total Meetings</div>
+            <div className="text-xs text-green-600 mt-2">+12% from last period</div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-gray-900/50 rounded-lg p-6 border border-gray-800"
+            className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-green-500/10 rounded-lg">
-                <Target className="w-6 h-6 text-green-400" />
+              <div className="p-2 bg-green-100 rounded-lg">
+                <Target className="w-6 h-6 text-green-600" />
               </div>
               {getTrendIcon(analyticsData.overview.actionItemsGenerated, 1500)}
             </div>
-            <div className="text-3xl font-bold text-white mb-1">
+            <div className="text-3xl font-bold text-black mb-1">
               {formatNumber(analyticsData.overview.actionItemsGenerated)}
             </div>
-            <div className="text-sm text-gray-400">Action Items</div>
-            <div className="text-xs text-green-400 mt-2">+25% efficiency gain</div>
+            <div className="text-sm text-gray-600">Action Items</div>
+            <div className="text-xs text-green-600 mt-2">+25% efficiency gain</div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-gray-900/50 rounded-lg p-6 border border-gray-800"
+            className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-yellow-500/10 rounded-lg">
-                <CheckCircle className="w-6 h-6 text-yellow-400" />
+              <div className="p-2 bg-yellow-100 rounded-lg">
+                <CheckCircle className="w-6 h-6 text-yellow-600" />
               </div>
               {getTrendIcon(analyticsData.overview.completionRate, 80)}
             </div>
-            <div className="text-3xl font-bold text-white mb-1">
+            <div className="text-3xl font-bold text-black mb-1">
               {analyticsData.overview.completionRate}%
             </div>
-            <div className="text-sm text-gray-400">Completion Rate</div>
-            <div className="text-xs text-green-400 mt-2">+7% improvement</div>
+            <div className="text-sm text-gray-600">Completion Rate</div>
+            <div className="text-xs text-green-600 mt-2">+7% improvement</div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gray-900/50 rounded-lg p-6 border border-gray-800"
+            className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-purple-500/10 rounded-lg">
-                <Star className="w-6 h-6 text-purple-400" />
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <Star className="w-6 h-6 text-purple-600" />
               </div>
               {getTrendIcon(analyticsData.overview.productivityScore, 85)}
             </div>
             <div className={`text-3xl font-bold mb-1 ${getScoreColor(analyticsData.overview.productivityScore)}`}>
               {analyticsData.overview.productivityScore}
             </div>
-            <div className="text-sm text-gray-400">Productivity Score</div>
-            <div className="text-xs text-green-400 mt-2">Industry leading</div>
+            <div className="text-sm text-gray-600">Productivity Score</div>
+            <div className="text-xs text-green-600 mt-2">Industry leading</div>
           </motion.div>
         </div>
 
@@ -246,10 +246,10 @@ const AdvancedAnalytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gray-900/50 rounded-lg p-6 border border-gray-800"
+          className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg"
         >
-          <h3 className="text-xl font-semibold text-white mb-6 flex items-center space-x-2">
-            <Award className="w-6 h-6 text-yellow-400" />
+          <h3 className="text-xl font-semibold text-black mb-6 flex items-center space-x-2">
+            <Award className="w-6 h-6 text-yellow-600" />
             <span>Meeting Effectiveness Analysis</span>
           </h3>
           

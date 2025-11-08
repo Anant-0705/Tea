@@ -61,18 +61,18 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] overflow-x-hidden">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Enhanced Animated Background */}
         <div className="absolute inset-0">
           {/* Base gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-[#0f0f0f] to-black" />
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100" />
           
           {/* Moving geometric shapes */}
           <div className="absolute inset-0">
             <motion.div
-              className="absolute w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl"
+              className="absolute w-96 h-96 bg-gradient-to-r from-emerald-500/5 to-green-500/5 rounded-full blur-3xl"
               animate={{
                 x: [0, 100, 0],
                 y: [0, -50, 0],
@@ -86,7 +86,7 @@ export default function Home() {
               style={{ top: '10%', left: '10%' }}
             />
             <motion.div
-              className="absolute w-64 h-64 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-full blur-3xl"
+              className="absolute w-64 h-64 bg-gradient-to-r from-green-500/5 to-emerald-500/5 rounded-full blur-3xl"
               animate={{
                 x: [0, -80, 0],
                 y: [0, 100, 0],
@@ -103,11 +103,11 @@ export default function Home() {
           </div>
           
           {/* Floating particles */}
-          <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0 opacity-20">
             {[...Array(80)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+                className="absolute bg-gradient-to-r from-emerald-400/30 to-green-600/30 rounded-full"
                 style={{
                   width: Math.random() * 4 + 1 + 'px',
                   height: Math.random() * 4 + 1 + 'px',
@@ -134,8 +134,8 @@ export default function Home() {
             <svg className="w-full h-full">
               <defs>
                 <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#3B82F6" />
-                  <stop offset="100%" stopColor="#1E40AF" />
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#059669" />
                 </linearGradient>
               </defs>
               {[...Array(6)].map((_, i) => (
@@ -161,132 +161,157 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700/50 mb-8 backdrop-blur-sm"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            >
-              <Sparkles className="w-5 h-5 text-blue-400" />
-            </motion.div>
-            <span className="text-blue-200 font-medium tracking-wide">
-              Transcription Engine for Autonomous Intelligence
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-tight"
-          >
-            <motion.span 
-              className="bg-gradient-to-r from-blue-300 via-blue-400 to-blue-600 bg-clip-text text-transparent"
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              TEA
-            </motion.span>
-            <motion.span 
-              className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-700 bg-clip-text text-transparent"
-              animate={{
-                backgroundPosition: ["100% 50%", "0% 50%", "100% 50%"],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.5,
-              }}
-            >
-              i
-            </motion.span>
-            <br />
-            <motion.span 
-              className="text-3xl md:text-5xl lg:text-6xl font-light text-zinc-400/80 leading-relaxed"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 1 }}
-            >
-              Where Intelligence Meets
-              <span className="block text-gradient bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-medium">
-                Transcription
-              </span>
-            </motion.span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-            className="text-xl md:text-2xl lg:text-3xl text-zinc-300 mb-12 max-w-4xl mx-auto leading-relaxed font-light"
-          >
-            Experience the future of meeting intelligence. Advanced transcription technology meets 
-            <span className="text-blue-400 font-medium"> autonomous AI </span>
-            to transform every conversation into 
-            <span className="text-blue-400 font-medium"> actionable insights </span>
-            and automated workflows.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20"
-          >
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <Link
-                href="/schedule"
-                className="group relative px-10 py-5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/30 flex items-center gap-3 overflow-hidden"
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-32">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="text-center lg:text-left">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-100 border border-gray-200 mb-8 backdrop-blur-sm"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                <span className="relative z-10">Start Your TEAi Journey</span>
                 <motion.div
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative z-10"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                 >
-                  <ArrowRight className="w-5 h-5" />
+                  <Sparkles className="w-5 h-5 text-emerald-500" />
                 </motion.div>
-              </Link>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <Link
-                href="/dashboard"
-                className="group px-10 py-5 bg-zinc-900/50 backdrop-blur-sm text-white rounded-full font-semibold text-lg transition-all duration-300 hover:bg-zinc-800/70 border border-zinc-700/50 hover:border-zinc-600 flex items-center gap-3"
-              >
-                <span>Explore Platform</span>
-                <Brain className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
-              </Link>
-            </motion.div>
-          </motion.div>
+                <span className="text-gray-700 font-medium tracking-wide">
+                  Transcription Engine for Autonomous Intelligence
+                </span>
+              </motion.div>
 
-          {/* Enhanced Stats */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight"
+              >
+                <motion.span 
+                  className="bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent"
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  TEA
+                </motion.span>
+                <motion.span 
+                  className="bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 bg-clip-text text-transparent"
+                  animate={{
+                    backgroundPosition: ["100% 50%", "0% 50%", "100% 50%"],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5,
+                  }}
+                >
+                  i
+                </motion.span>
+                <br />
+                <motion.span 
+                  className="text-2xl md:text-4xl lg:text-5xl font-light text-gray-600 leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8, duration: 1 }}
+                >
+                  Where Intelligence Meets
+                  <span className="block text-gradient bg-gradient-to-r from-emerald-500 to-green-500 bg-clip-text text-transparent font-medium">
+                    Transcription
+                  </span>
+                </motion.span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+                className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-12 max-w-3xl leading-relaxed font-light"
+              >
+                Experience the future of meeting intelligence. Advanced transcription technology meets 
+                <span className="text-emerald-500 font-medium"> autonomous AI </span>
+                to transform every conversation into 
+                <span className="text-emerald-500 font-medium"> actionable insights </span>
+                and automated workflows.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
+                className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-6"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Link
+                    href="/schedule"
+                    className="group relative px-10 py-5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 flex items-center gap-3 overflow-hidden"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    <span className="relative z-10">Start Your TEAi Journey</span>
+                    <motion.div
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      className="relative z-10"
+                    >
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.div>
+                  </Link>
+                </motion.div>
+                
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Link
+                    href="/dashboard"
+                    className="group px-10 py-5 bg-white border border-gray-300 text-gray-800 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gray-50 hover:border-gray-400 flex items-center gap-3"
+                  >
+                    <span>Explore Platform</span>
+                    <Brain className="w-5 h-5 text-emerald-500 group-hover:text-emerald-600 transition-colors" />
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </div>
+
+            {/* Right Side - Landing Page Image */}
+            <div className="hidden lg:flex justify-center items-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                className="relative"
+              >
+                <motion.img
+                  src="/landing_page2.jpg"
+                  alt="TEAi Platform Interface"
+                  className="w-full max-w-lg h-auto rounded-2xl shadow-2xl"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                />
+                {/* Optional glow effect */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/20 to-green-500/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Enhanced Stats - Below the main content */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20"
           >
             {stats.map((stat, index) => (
               <motion.div
@@ -304,13 +329,13 @@ export default function Home() {
                 className="text-center group cursor-pointer"
               >
                 <motion.div 
-                  className="relative p-6 rounded-2xl bg-gradient-to-br from-zinc-900/50 to-zinc-950/50 backdrop-blur-sm border border-zinc-800/50 group-hover:border-blue-500/30 transition-all duration-300"
+                  className="relative p-6 rounded-2xl bg-white border border-gray-200 group-hover:border-emerald-200 transition-all duration-300 shadow-sm group-hover:shadow-md"
                   whileHover={{
-                    boxShadow: "0 20px 40px rgba(59, 130, 246, 0.1)",
+                    boxShadow: "0 20px 40px rgba(16, 185, 129, 0.1)",
                   }}
                 >
                   <motion.div 
-                    className="text-3xl md:text-4xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300"
+                    className="text-3xl md:text-4xl font-bold text-black mb-2 group-hover:text-emerald-500 transition-colors duration-300"
                     animate={{ 
                       scale: [1, 1.02, 1],
                     }}
@@ -323,13 +348,13 @@ export default function Home() {
                   >
                     {stat.value}
                   </motion.div>
-                  <div className="text-sm text-zinc-500 font-medium tracking-wide group-hover:text-zinc-400 transition-colors duration-300">
+                  <div className="text-sm text-gray-500 font-medium tracking-wide group-hover:text-gray-600 transition-colors duration-300">
                     {stat.label}
                   </div>
                   
                   {/* Animated accent line */}
                   <motion.div
-                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full"
                     initial={{ width: 0 }}
                     whileHover={{ width: "60%" }}
                     transition={{ duration: 0.3 }}
@@ -342,7 +367,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-32 bg-gradient-to-b from-[#0f0f0f] to-zinc-950">
+      <section id="features" className="py-32 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -350,10 +375,10 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
               Advanced TEAi Features
             </h2>
-            <p className="text-xl text-zinc-400">
+            <p className="text-xl text-gray-600">
               Everything you need for intelligent meeting automation
             </p>
           </motion.div>
@@ -370,35 +395,35 @@ export default function Home() {
                   y: -8,
                   transition: { type: "spring", stiffness: 300, damping: 20 }
                 }}
-                className="group relative p-8 rounded-3xl bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur-sm border border-zinc-800/50 hover:border-blue-500/30 transition-all duration-500 overflow-hidden"
+                className="group relative p-8 rounded-3xl bg-white border border-gray-200 hover:border-emerald-200 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-lg"
               >
                 {/* Animated background glow */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-green-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   initial={false}
                 />
                 
                 <div className="relative z-10">
                   <motion.div 
-                    className="w-16 h-16 rounded-2xl bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 flex items-center justify-center mb-6 group-hover:from-blue-800/20 group-hover:to-blue-900/20 transition-all duration-500"
+                    className="w-16 h-16 rounded-2xl bg-gray-100 group-hover:bg-emerald-100 flex items-center justify-center mb-6 transition-all duration-500"
                     whileHover={{ 
                       scale: 1.1,
                       rotate: 5,
                     }}
                     transition={{ type: "spring", stiffness: 400, damping: 15 }}
                   >
-                    <feature.icon className="w-8 h-8 text-zinc-300 group-hover:text-blue-400 transition-colors duration-500" />
+                    <feature.icon className="w-8 h-8 text-gray-600 group-hover:text-emerald-500 transition-colors duration-500" />
                   </motion.div>
                   
                   <motion.h3 
-                    className="text-2xl font-bold text-white mb-4 group-hover:text-blue-100 transition-colors duration-500"
+                    className="text-2xl font-bold text-black mb-4 group-hover:text-emerald-600 transition-colors duration-500"
                     layoutId={`feature-title-${index}`}
                   >
                     {feature.title}
                   </motion.h3>
                   
                   <motion.p 
-                    className="text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-500"
+                    className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-500"
                     layoutId={`feature-desc-${index}`}
                   >
                     {feature.description}
@@ -407,7 +432,7 @@ export default function Home() {
                 
                 {/* Animated corner accent */}
                 <motion.div
-                  className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-500/10 to-transparent"
+                  className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-emerald-100/50 to-transparent"
                   initial={{ scale: 0, rotate: 45 }}
                   whileHover={{ scale: 1, rotate: 45 }}
                   transition={{ duration: 0.3 }}
@@ -419,7 +444,7 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-32 bg-zinc-950">
+      <section id="how-it-works" className="py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -427,10 +452,10 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
               How It Works
             </h2>
-            <p className="text-xl text-zinc-400">
+            <p className="text-xl text-gray-600">
               Four simple steps to transform your workflow
             </p>
           </motion.div>
@@ -450,13 +475,13 @@ export default function Home() {
                 transition={{ delay: index * 0.1 }}
                 className="relative text-center"
               >
-                <div className="w-16 h-16 mx-auto rounded-full bg-zinc-800 flex items-center justify-center mb-4 border-2 border-zinc-700">
-                  <step.icon className="w-8 h-8 text-zinc-300" />
+                <div className="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4 border-2 border-gray-200">
+                  <step.icon className="w-8 h-8 text-gray-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
-                <p className="text-sm text-zinc-400">{step.description}</p>
+                <h3 className="text-lg font-semibold text-black mb-2">{step.title}</h3>
+                <p className="text-sm text-gray-600">{step.description}</p>
                 {index < 3 && (
-                  <div className="hidden md:block absolute top-8 -right-3 w-6 h-0.5 bg-zinc-700" />
+                  <div className="hidden md:block absolute top-8 -right-3 w-6 h-0.5 bg-gray-300" />
                 )}
               </motion.div>
             ))}
@@ -465,7 +490,7 @@ export default function Home() {
       </section>
 
       {/* Integrations Section */}
-      <section id="integrations" className="py-32 bg-gradient-to-b from-zinc-950 to-[#0f0f0f]">
+      <section id="integrations" className="py-32 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -473,10 +498,10 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
               Seamless Integrations
             </h2>
-            <p className="text-xl text-zinc-400">
+            <p className="text-xl text-gray-600">
               Connect with your favorite tools
             </p>
           </motion.div>
@@ -490,7 +515,7 @@ export default function Home() {
             {integrations.map((integration, index) => (
               <div
                 key={index}
-                className="px-6 py-3 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-800 transition-all"
+                className="px-6 py-3 rounded-full bg-white border border-gray-200 text-gray-700 hover:border-emerald-200 hover:bg-emerald-50 transition-all"
               >
                 {integration}
               </div>
@@ -500,22 +525,22 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 bg-[#0f0f0f]">
+      <section className="py-32 bg-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
               Ready to Experience TEAi?
             </h2>
-            <p className="text-xl text-zinc-400 mb-8">
+            <p className="text-xl text-gray-600 mb-8">
               Join organizations revolutionizing their meeting intelligence with autonomous AI
             </p>
             <Link
               href="/schedule"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full font-medium text-lg transition-all hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full font-medium text-lg transition-all hover:shadow-2xl hover:shadow-emerald-500/20 hover:scale-105"
             >
               Start Your TEAi Journey
               <ArrowRight className="w-5 h-5" />
@@ -525,8 +550,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-zinc-900">
-        <div className="max-w-7xl mx-auto px-6 text-center text-zinc-500">
+      <footer className="py-12 border-t border-gray-200 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6 text-center text-gray-500">
           <p>&copy; 2025 TEAi - Transcription Engine for Autonomous Intelligence. All rights reserved.</p>
         </div>
       </footer>

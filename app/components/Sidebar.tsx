@@ -53,7 +53,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
       label: 'Meetings',
       icon: Video,
       href: '/dashboard/meet',
-      badge: '3',
+    
       children: [
         {
           id: 'all-meetings',
@@ -130,8 +130,8 @@ export default function Sidebar({ className = '' }: SidebarProps) {
               onClick={() => toggleDropdown(item.id)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                  ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20'
+                  : 'text-gray-600 hover:text-black hover:bg-gray-100'
               }`}
             >
               <item.icon className={`w-5 h-5 ${isCollapsed ? 'mx-auto' : ''}`} />
@@ -156,8 +156,8 @@ export default function Sidebar({ className = '' }: SidebarProps) {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                  ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20'
+                  : 'text-gray-600 hover:text-black hover:bg-gray-100'
               }`}
             >
               <item.icon className={`w-5 h-5 ${isCollapsed ? 'mx-auto' : ''}`} />
@@ -202,27 +202,27 @@ export default function Sidebar({ className = '' }: SidebarProps) {
     <motion.div
       initial={{ x: -280 }}
       animate={{ x: 0 }}
-      className={`fixed left-0 top-0 h-full bg-zinc-900/95 backdrop-blur-xl border-r border-zinc-800 z-40 hidden md:block ${
+      className={`fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40 hidden md:block ${
         isCollapsed ? 'w-16' : 'w-64'
-      } transition-all duration-300 ${className}`}
+      } transition-all duration-300 ${className} shadow-sm`}
     >
       <div className="flex flex-col h-full">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200">
           {!isCollapsed && (
             <Link href="/" className="flex items-center space-x-2">
               <div className="relative">
-                <Brain className="w-6 h-6 text-blue-400" />
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <Brain className="w-6 h-6 text-emerald-500" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
               </div>
-              <span className="text-lg font-bold text-blue-400">
-                TEA<span className="text-blue-300">i</span>
+              <span className="text-lg font-bold text-black">
+                TEA<span className="text-emerald-500">i</span>
               </span>
             </Link>
           )}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 hover:text-black transition-colors"
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
@@ -233,7 +233,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
           {/* Main Navigation */}
           <div className="space-y-1">
             {!isCollapsed && (
-              <h3 className="px-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+              <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Main
               </h3>
             )}
@@ -242,7 +242,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
         </div>
 
         {/* User Profile & Bottom Items */}
-        <div className="border-t border-zinc-800 p-4 space-y-4">
+        <div className="border-t border-gray-200 p-4 space-y-4">
           {/* Bottom Navigation */}
           <div className="space-y-1">
             {bottomItems.map(item => renderSidebarItem(item))}
@@ -250,7 +250,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
 
           {/* User Profile */}
           {session && (
-            <div className={`flex items-center gap-3 p-3 rounded-lg bg-zinc-800/50 ${
+            <div className={`flex items-center gap-3 p-3 rounded-lg bg-gray-50 ${
               isCollapsed ? 'justify-center' : ''
             }`}>
               {session.user?.image ? (
@@ -260,16 +260,16 @@ export default function Sidebar({ className = '' }: SidebarProps) {
                   className="w-8 h-8 rounded-full"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
-                  <User className="w-4 h-4 text-zinc-400" />
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                  <User className="w-4 h-4 text-gray-600" />
                 </div>
               )}
               {!isCollapsed && (
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">
+                  <p className="text-sm font-medium text-black truncate">
                     {session.user?.name}
                   </p>
-                  <p className="text-xs text-zinc-400 truncate">
+                  <p className="text-xs text-gray-500 truncate">
                     {session.user?.email}
                   </p>
                 </div>
@@ -277,7 +277,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
               {!isCollapsed && (
                 <button
                   onClick={handleSignOut}
-                  className="p-1.5 rounded-md hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-md hover:bg-gray-200 text-gray-600 hover:text-black transition-colors"
                   title="Sign Out"
                 >
                   <LogOut className="w-4 h-4" />

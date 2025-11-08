@@ -89,7 +89,7 @@ export default function CreateMeetingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f]">
+    <div className="min-h-screen bg-white">
       <div className="pb-20">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -100,16 +100,16 @@ export default function CreateMeetingPage() {
           >
             <Link
               href="/dashboard"
-              className="p-2 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 transition-colors"
+              className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors border border-gray-200"
             >
-              <ArrowLeft className="w-5 h-5 text-zinc-400" />
+              <ArrowLeft className="w-5 h-5 text-gray-600" />
             </Link>
             
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white">
+              <h1 className="text-2xl md:text-3xl font-bold text-black">
                 Create New Meeting
               </h1>
-              <p className="text-zinc-400">Schedule an AI-powered meeting with intelligent features</p>
+              <p className="text-gray-600">Schedule an AI-powered meeting with intelligent features</p>
             </div>
           </motion.div>
 
@@ -119,16 +119,16 @@ export default function CreateMeetingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-6"
+              className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg"
             >
-              <h2 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-400" />
+              <h2 className="text-lg font-semibold text-black mb-6 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-blue-500" />
                 Meeting Details
               </h2>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Meeting Title *
                   </label>
                   <input
@@ -136,13 +136,13 @@ export default function CreateMeetingPage() {
                     value={formData.title}
                     onChange={(e) => handleInputChange('title', e.target.value)}
                     placeholder="Enter meeting title"
-                    className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500/50 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
                     required
                   />
                 </div>
                 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Description
                   </label>
                   <textarea
@@ -150,7 +150,7 @@ export default function CreateMeetingPage() {
                     onChange={(e) => handleInputChange('description', e.target.value)}
                     placeholder="What will you discuss in this meeting?"
                     rows={3}
-                    className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white placeholder-zinc-400 focus:border-blue-500/50 focus:outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors resize-none"
                   />
                 </div>
               </div>
@@ -161,48 +161,48 @@ export default function CreateMeetingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-6"
+              className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg"
             >
-              <h2 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-emerald-400" />
+              <h2 className="text-lg font-semibold text-black mb-6 flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-emerald-500" />
                 Schedule
               </h2>
               
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Date *
                   </label>
                   <input
                     type="date"
                     value={formData.date}
                     onChange={(e) => handleInputChange('date', e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white focus:border-blue-500/50 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Time *
                   </label>
                   <input
                     type="time"
                     value={formData.time}
                     onChange={(e) => handleInputChange('time', e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white focus:border-blue-500/50 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Duration *
                   </label>
                   <select
                     value={formData.duration}
                     onChange={(e) => handleInputChange('duration', e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white focus:border-blue-500/50 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
                   >
                     {durations.map(duration => (
                       <option key={duration.value} value={duration.value}>
@@ -219,9 +219,9 @@ export default function CreateMeetingPage() {
                     type="checkbox"
                     checked={formData.isRecurring}
                     onChange={(e) => handleInputChange('isRecurring', e.target.checked)}
-                    className="w-4 h-4 text-blue-600 bg-zinc-800 border-zinc-600 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-emerald-600 bg-white border-gray-300 rounded focus:ring-emerald-500"
                   />
-                  <span className="text-zinc-300">Make this a recurring meeting</span>
+                  <span className="text-gray-700">Make this a recurring meeting</span>
                 </label>
               </div>
             </motion.div>

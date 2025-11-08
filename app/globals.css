@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f0f0f;
-  --foreground: #e5e5e5;
-  --primary: #3b3b3b;
-  --secondary: #262626;
-  --accent: #525252;
-  --border: #2a2a2a;
+  --background: #ffffff;
+  --foreground: #000000;
+  --primary: #10b981;
+  --secondary: #f9fafb;
+  --accent: #059669;
+  --border: #e5e7eb;
+  --light-green: #10b981;
+  --dark-green: #059669;
+  --success: #10b981;
 }
 
 @theme inline {
@@ -16,6 +19,9 @@
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-border: var(--border);
+  --color-success: var(--success);
+  --color-light-green: var(--light-green);
+  --color-dark-green: var(--dark-green);
   --font-sans: var(--font-m-plus-rounded);
   --font-mono: var(--font-m-plus-rounded);
 }
@@ -34,16 +40,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #f3f4f6;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b3b3b;
+  background: #10b981;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #525252;
+  background: #059669;
 }
 
 /* Smooth scrolling */
@@ -53,14 +59,14 @@ html {
 
 /* Glass effect */
 .glass {
-  background: rgba(38, 38, 38, 0.4);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(82, 82, 82, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%);
+  background: linear-gradient(135deg, #000000 0%, #10b981 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -68,5 +74,5 @@ html {
 
 /* Glow effect */
 .glow {
-  box-shadow: 0 0 20px rgba(82, 82, 82, 0.3);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
 }

@@ -29,9 +29,9 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
 }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="bg-gray-900/50 rounded-lg p-6 border border-gray-800">
-        <h3 className="text-lg font-semibold text-white mb-4">{title}</h3>
-        <div className="flex items-center justify-center h-64 text-gray-400">
+      <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg">
+        <h3 className="text-lg font-semibold text-black mb-4">{title}</h3>
+        <div className="flex items-center justify-center h-64 text-gray-600">
           No data available
         </div>
       </div>
@@ -94,10 +94,10 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-900/50 rounded-lg p-6 border border-gray-800"
+      className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg"
     >
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <h3 className="text-lg font-semibold text-black">{title}</h3>
         <div className="flex items-center space-x-4">
           {metrics.map((metric) => (
             <div key={metric.key} className="flex items-center space-x-2">
@@ -105,7 +105,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: metric.color }}
               />
-              <span className="text-sm text-gray-300">{metric.label}</span>
+              <span className="text-sm text-gray-700">{metric.label}</span>
             </div>
           ))}
         </div>
@@ -223,11 +223,11 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
           
           return (
             <div key={metric.key} className="text-center">
-              <div className="text-lg font-bold text-white">
+              <div className="text-lg font-bold text-black">
                 {avg.toFixed(1)}
               </div>
-              <div className="text-xs text-gray-400">{metric.label} Avg</div>
-              <div className={`text-xs ${trend >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              <div className="text-xs text-gray-600">{metric.label} Avg</div>
+              <div className={`text-xs ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 {trend >= 0 ? '+' : ''}{trend.toFixed(1)}%
               </div>
             </div>
