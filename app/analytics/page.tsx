@@ -53,7 +53,7 @@ export default function AnalyticsPage() {
         setAnalyticsData(data.analytics);
       }
     } catch (error) {
-      console.error('Failed to load analytics:', error);
+      // Error handling without console logging
     }
     setLoading(false);
   };

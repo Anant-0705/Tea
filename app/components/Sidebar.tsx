@@ -83,14 +83,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
     }
   ];
 
-  const utilityItems: SidebarItem[] = [
-    {
-      id: 'meeting-room',
-      label: 'Join Meeting',
-      icon: Phone,
-      href: '/meeting'
-    }
-  ];
+
 
   const bottomItems: SidebarItem[] = [
     {
@@ -245,16 +238,6 @@ export default function Sidebar({ className = '' }: SidebarProps) {
               </h3>
             )}
             {navigationItems.map(item => renderSidebarItem(item))}
-          </div>
-
-          {/* Utilities */}
-          <div className="space-y-1">
-            {!isCollapsed && (
-              <h3 className="px-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-                Quick Actions
-              </h3>
-            )}
-            {utilityItems.map(item => renderSidebarItem(item))}
           </div>
         </div>
 
