@@ -81,7 +81,7 @@ export default function MeetingsPage() {
               </p>
             </div>
             
-            <Link href="/create">
+            <Link href="/schedule">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -169,7 +169,7 @@ export default function MeetingsPage() {
                   {searchTerm ? 'Try adjusting your search or filter criteria' : 'Create your first meeting to get started'}
                 </p>
                 <Link
-                  href="/create"
+                  href="/schedule"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
                 >
                   <Plus className="w-5 h-5" />

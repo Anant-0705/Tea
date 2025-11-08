@@ -65,7 +65,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
           id: 'create-meeting',
           label: 'Create Meeting',
           icon: Clock,
-          href: '/create'
+          href: '/schedule'
         }
       ]
     },

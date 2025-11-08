@@ -114,7 +114,7 @@ export default function DashboardPage() {
             transition={{ delay: 0.3 }}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
           >
-            <Link href="/create">
+            <Link href="/schedule">
               <motion.div
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
@@ -233,7 +233,7 @@ export default function DashboardPage() {
                 <h3 className="text-lg font-medium text-white mb-2">No meetings yet</h3>
                 <p className="text-zinc-400 mb-6">Create your first meeting to get started with TEAi</p>
                 <Link
-                  href="/create"
+                  href="/schedule"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
