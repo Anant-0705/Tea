@@ -53,7 +53,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
       label: 'Meetings',
       icon: Video,
       href: '/dashboard/meet',
-      badge: '3',
+    
       children: [
         {
           id: 'all-meetings',

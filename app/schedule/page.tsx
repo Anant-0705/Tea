@@ -119,7 +119,7 @@ export default function SchedulePage() {
               {meetingData.emailInvitations ? (
                 <>
                   <br />
-                  📧 Invitations sent to {meetingData.emailInvitations.sent} out of {meetingData.emailInvitations.total} participants.
+                   Invitations sent to {meetingData.emailInvitations.sent} out of {meetingData.emailInvitations.total} participants.
                 </>
               ) : null}
             </p>
@@ -139,24 +139,7 @@ export default function SchedulePage() {
             )}
 
             {/* Email Invitation Status */}
-            {meetingData.emailInvitations && (
-              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 mb-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <Check className="w-4 h-4 text-emerald-500" />
-                  <p className="text-sm text-emerald-400 font-medium">Email Invitations Sent</p>
-                </div>
-                <div className="text-xs text-emerald-300">
-                  <p>✅ Successfully sent: {meetingData.emailInvitations.sent}</p>
-                  {meetingData.emailInvitations.failed > 0 && (
-                    <p>❌ Failed to send: {meetingData.emailInvitations.failed}</p>
-                  )}
-                  <p className="mt-2 text-emerald-400">
-                    All participants will receive a professional invitation email with meeting details and join link.
-                  </p>
-                </div>
-              </div>
-            )}
-            
+  
             <div className="space-y-3">
               {meetingData.meeting?.id && meetingData.meeting?.meetingLink && (
                 <>
@@ -201,19 +184,12 @@ export default function SchedulePage() {
                     className="flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-full font-medium hover:bg-emerald-700 transition-all w-full"
                   >
                     <Video className="w-4 h-4" />
-                    Join Google Meet + Start Transcription
+                    Join Google Meet
                   </button>
-                  <div className="text-xs text-zinc-500 text-center">
-                    💡 Opens Google Meet in new tab & monitors transcription
-                  </div>
+               
                 </>
               )}
-              <Link
-                href="/dashboard"
-                className="block px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-zinc-200 transition-all"
-              >
-                Go to Dashboard
-              </Link>
+
               <button
                 onClick={() => {
                   setSubmitted(false);
